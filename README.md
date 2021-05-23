@@ -2,6 +2,11 @@
 
 A new Flutter project.
 
+Links to get started with installing and running an Algorand node locally:
+
+- [Install node](https://developer.algorand.org/docs/run-a-node/setup/install/)
+- [Start node](https://developer.algorand.org/docs/run-a-node/setup/install/#start-node)
+
 ## Getting Started
 
 This project is a starting point for a Flutter application.
