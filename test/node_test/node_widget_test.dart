@@ -27,26 +27,16 @@ void main() {
     when(algorand.health()).thenAnswer((_) => Future.value(true));
 
     // Build our app and trigger a frame.
-    await tester.pumpWidget(MyApp(algorand: algorand));
+    await tester.pumpWidget(AlgoApp(algorand: algorand));
 
     // Check that we show spinner when we wait for data
     expect(find.byType(CircularProgressIndicator), findsOneWidget);
 
     await tester.pumpAndSettle();
 
-    // TODO: change when we get two buttons for import and create algorand wallet
-
     // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
-
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
-
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    expect(find.byKey(Key('CREATE_NEW_WALLET_BUTTON')), findsOneWidget);
+    expect(find.byKey(Key('IMPORT_WALLET_BUTTON')), findsOneWidget);
   });
 
   testWidgets(
@@ -55,7 +45,7 @@ void main() {
     when(algorand.health()).thenAnswer((_) => Future.value(false));
 
     // Build our app and trigger a frame.
-    await tester.pumpWidget(MyApp(algorand: algorand));
+    await tester.pumpWidget(AlgoApp(algorand: algorand));
 
     // Check that we show spinner when we wait for data
     expect(find.byType(CircularProgressIndicator), findsOneWidget);
