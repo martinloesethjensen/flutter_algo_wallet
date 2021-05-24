@@ -1,10 +1,18 @@
+import 'package:algorand_dart/algorand_dart.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_algo_wallet/services/service_locator.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(
+    MyApp(algorand: algorand),
+  );
 }
 
 class MyApp extends StatelessWidget {
+  final Algorand algorand;
+
+  const MyApp({Key? key, required this.algorand}) : super(key: key);
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -22,7 +30,25 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: FutureBuilder<bool>(
+          future: algorand.health(),
+          builder: (context, snapshot) {
+            if (!snapshot.hasData)
+              return Scaffold(
+                body: Center(
+                  child: CircularProgressIndicator(),
+                ),
+              );
+
+            if (!snapshot.data!)
+              return Scaffold(
+                body: Center(
+                  child: Text('No connection to node',
+                      key: Key('NO_NODE_CONNECTION')),
+                ),
+              );
+            return MyHomePage(title: 'Flutter Demo Home Page');
+          }),
     );
   }
 }
