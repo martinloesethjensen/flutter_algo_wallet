@@ -37,6 +37,8 @@ dependencies:
   hive: ^2.0.4
   hive_flutter: ^1.0.0
   provider: ^5.0.0
+  fluro: ^2.0.3
+  equatable: ^2.0.2
 
 
 dev_dependencies:

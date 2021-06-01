@@ -1,25 +1,36 @@
 import 'package:algorand_dart/algorand_dart.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_algo_wallet/routes/route_configuration.dart';
+import 'package:flutter_algo_wallet/screens/main_screen.dart';
 import 'package:flutter_algo_wallet/services/service_locator.dart';
 
-void main() {
+Future<void> main() async {
+  // Register the routing
+  await RouteConfiguration.register();
+
+  final routeName = MainScreen.routeName;
+
   runApp(
-    AlgoApp(algorand: algorand),
+    AlgoApp(algorand: algorand, initialRoute: routeName),
   );
 }
 
 class AlgoApp extends StatelessWidget {
   final Algorand algorand;
+  final String initialRoute;
 
-  const AlgoApp({Key? key, required this.algorand}) : super(key: key);
+  const AlgoApp({Key? key, required this.algorand, required this.initialRoute})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Algorand Wallet',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
+      onGenerateRoute: router.generator,
+      initialRoute: initialRoute,
       home: FutureBuilder<bool>(
           future: algorand.health(),
           builder: (context, snapshot) {
@@ -41,47 +52,6 @@ class AlgoApp extends StatelessWidget {
               );
             return MainScreen();
           }),
-    );
-  }
-}
-
-class MainScreen extends StatelessWidget {
-  MainScreen({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Import or create wallet'),
-      ),
-      body: Center(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            OutlinedButton(
-              key: Key('CREATE_NEW_WALLET_BUTTON'),
-              onPressed: () {}, // TODO
-              child: Text('Create a new wallet'),
-              style: ButtonStyle(
-                fixedSize: MaterialStateProperty.all<Size>(
-                  Size(double.infinity, 75),
-                ),
-              ),
-            ),
-            SizedBox(width: 10),
-            OutlinedButton(
-              key: Key('IMPORT_WALLET_BUTTON'),
-              onPressed: () {}, // TODO
-              child: Text('Import existing wallet'),
-              style: ButtonStyle(
-                fixedSize: MaterialStateProperty.all<Size>(
-                  Size(double.infinity, 75),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
     );
   }
 }
