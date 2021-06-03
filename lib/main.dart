@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_algo_wallet/routes/route_configuration.dart';
 import 'package:flutter_algo_wallet/screens/main_screen.dart';
 import 'package:flutter_algo_wallet/services/service_locator.dart';
+import 'package:provider/provider.dart';
 
 Future<void> main() async {
   // Register the routing
@@ -11,16 +12,19 @@ Future<void> main() async {
   final routeName = MainScreen.routeName;
 
   runApp(
-    AlgoApp(algorand: algorand, initialRoute: routeName),
+    Provider<Algorand>(
+      create: (_) => ServiceLocator().algorand,
+      child: AlgoApp(
+        initialRoute: routeName,
+      ),
+    ),
   );
 }
 
 class AlgoApp extends StatelessWidget {
-  final Algorand algorand;
   final String initialRoute;
 
-  const AlgoApp({Key? key, required this.algorand, required this.initialRoute})
-      : super(key: key);
+  const AlgoApp({Key? key, this.initialRoute = '/'}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -31,27 +35,6 @@ class AlgoApp extends StatelessWidget {
       ),
       onGenerateRoute: router.generator,
       initialRoute: initialRoute,
-      home: FutureBuilder<bool>(
-          future: algorand.health(),
-          builder: (context, snapshot) {
-            if (!snapshot.hasData)
-              return Scaffold(
-                body: Center(
-                  child: CircularProgressIndicator(),
-                ),
-              );
-
-            if (!snapshot.data!)
-              return Scaffold(
-                body: Center(
-                  child: Text(
-                    'No connection to node',
-                    key: Key('NO_NODE_CONNECTION'),
-                  ),
-                ),
-              );
-            return MainScreen();
-          }),
     );
   }
 }

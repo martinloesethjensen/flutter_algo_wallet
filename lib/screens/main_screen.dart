@@ -1,3 +1,4 @@
+import 'package:algorand_dart/algorand_dart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_algo_wallet/bloc/navigation_bloc.dart';
 import 'package:flutter_algo_wallet/models/navigation/navigation_tab.dart';
@@ -25,6 +26,8 @@ class MainScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final algorand = context.watch<Algorand>();
+
     return FutureBuilder<bool>(
         future: algorand.health(),
         builder: (context, snapshot) {
@@ -52,6 +55,7 @@ class MainScreen extends StatelessWidget {
                   final navigationTab =
                       context.watch<NavigationBloc>().currentTab;
                   final index = tabs.indexOf(navigationTab);
+
                   return IndexedStack(
                     index: index,
                     children: tabHandlers.values.toList(),

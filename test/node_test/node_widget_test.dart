@@ -7,15 +7,20 @@
 
 import 'package:algorand_dart/algorand_dart.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_algo_wallet/routes/route_configuration.dart';
+import 'package:flutter_algo_wallet/screens/main_screen.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:flutter_algo_wallet/main.dart';
 import 'package:mockito/mockito.dart';
+import 'package:provider/provider.dart';
 
 import 'node_test.mocks.dart';
 
-void main() {
+Future<void> main() async {
   late Algorand algorand;
+
+  await RouteConfiguration.register();
 
   setUp(() {
     algorand = MockAlgorand();
@@ -27,7 +32,14 @@ void main() {
     when(algorand.health()).thenAnswer((_) => Future.value(true));
 
     // Build our app and trigger a frame.
-    await tester.pumpWidget(AlgoApp(algorand: algorand));
+    await tester.pumpWidget(
+      Provider<Algorand>(
+        create: (_) => algorand,
+        child: AlgoApp(
+          initialRoute: MainScreen.routeName,
+        ),
+      ),
+    );
 
     // Check that we show spinner when we wait for data
     expect(find.byType(CircularProgressIndicator), findsOneWidget);
@@ -45,7 +57,9 @@ void main() {
     when(algorand.health()).thenAnswer((_) => Future.value(false));
 
     // Build our app and trigger a frame.
-    await tester.pumpWidget(AlgoApp(algorand: algorand));
+    await tester.pumpWidget(AlgoApp(
+      initialRoute: MainScreen.routeName,
+    ));
 
     // Check that we show spinner when we wait for data
     expect(find.byType(CircularProgressIndicator), findsOneWidget);
