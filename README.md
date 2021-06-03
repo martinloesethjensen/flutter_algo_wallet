@@ -28,5 +28,3 @@ The device can also be a simulator, emulator, web app.
 Find out more by running:
 
 `flutter run`
-
-
