@@ -7,7 +7,6 @@
 
 import 'package:algorand_dart/algorand_dart.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_algo_wallet/routes/route_configuration.dart';
 import 'package:flutter_algo_wallet/screens/main_screen.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -19,8 +18,6 @@ import 'node_test.mocks.dart';
 
 Future<void> main() async {
   late Algorand algorand;
-
-  await RouteConfiguration.register();
 
   setUp(() {
     algorand = MockAlgorand();
@@ -46,9 +43,11 @@ Future<void> main() async {
 
     await tester.pumpAndSettle();
 
+    await tester.pump();
+
     // Verify that our counter starts at 0.
-    expect(find.byKey(Key('CREATE_NEW_WALLET_BUTTON')), findsOneWidget);
-    expect(find.byKey(Key('IMPORT_WALLET_BUTTON')), findsOneWidget);
+    expect(find.text('Create a new wallet'), findsOneWidget);
+    expect(find.text('Import existing wallet'), findsOneWidget);
   });
 
   testWidgets(
