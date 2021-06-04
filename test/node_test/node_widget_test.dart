@@ -11,6 +11,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 import 'package:flutter_algo_wallet/main.dart';
 import 'package:mockito/mockito.dart';
+import 'package:provider/provider.dart';
 
 import 'node_test.mocks.dart';
 
@@ -27,7 +28,12 @@ void main() {
     when(algorand.health()).thenAnswer((_) => Future.value(true));
 
     // Build our app and trigger a frame.
-    await tester.pumpWidget(AlgoApp(algorand: algorand));
+    await tester.pumpWidget(
+      Provider<Algorand>(
+        create: (_) => algorand,
+        child: AlgoApp(),
+      ),
+    );
 
     // Check that we show spinner when we wait for data
     expect(find.byType(CircularProgressIndicator), findsOneWidget);
@@ -45,7 +51,12 @@ void main() {
     when(algorand.health()).thenAnswer((_) => Future.value(false));
 
     // Build our app and trigger a frame.
-    await tester.pumpWidget(AlgoApp(algorand: algorand));
+    await tester.pumpWidget(
+      Provider<Algorand>(
+        create: (_) => algorand,
+        child: AlgoApp(),
+      ),
+    );
 
     // Check that we show spinner when we wait for data
     expect(find.byType(CircularProgressIndicator), findsOneWidget);

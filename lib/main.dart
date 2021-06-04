@@ -1,27 +1,34 @@
 import 'package:algorand_dart/algorand_dart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_algo_wallet/services/service_locator.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   runApp(
-    AlgoApp(algorand: algorand),
+    MultiProvider(
+      providers: [
+        Provider<Algorand>(
+          create: (context) => ServiceLocator().algorand,
+        ),
+      ],
+      child: AlgoApp(),
+    ),
   );
 }
 
 class AlgoApp extends StatelessWidget {
-  final Algorand algorand;
-
-  const AlgoApp({Key? key, required this.algorand}) : super(key: key);
+  const AlgoApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final _algorand = context.watch<Algorand>();
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
       home: FutureBuilder<bool>(
-          future: algorand.health(),
+          future: _algorand.health(),
           builder: (context, snapshot) {
             if (!snapshot.hasData)
               return Scaffold(
