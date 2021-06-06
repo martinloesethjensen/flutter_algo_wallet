@@ -26,7 +26,6 @@ class AlgoApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _algorand = context.watch<Algorand>();
     return MaterialApp(
       title: 'Algorand Wallet',
       theme: ThemeData(
