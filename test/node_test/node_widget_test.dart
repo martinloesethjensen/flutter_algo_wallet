@@ -23,14 +23,25 @@ Future<void> main() async {
     algorand = MockAlgorand();
   });
 
-  testWidgets('Should show', (WidgetTester tester) async {
-    reset(algorand);
+  _appWithProviders() => MultiProvider(
+        providers: [
+          Provider<Algorand>(create: (_) => algorand),
+        ],
+        child: AlgoApp(
+          initialRoute: MainScreen.routeName,
+        ),
+      );
+
+  testWidgets(
+      'Should show options for import and create wallet buttons when there is node connection',
+      (WidgetTester tester) async {
     when(algorand.health()).thenAnswer((_) => Future.value(true));
 
     // Build our app and trigger a frame.
-    await tester.pumpWidget(MultiProvider(
-        providers: [Provider<Algorand>(create: (_) => algorand)],
-        child: MaterialApp(home: MainScreen())));
+    await tester.pumpWidget(_appWithProviders());
+
+    // Check that we show spinner when we wait for data
+    expect(find.byType(CircularProgressIndicator), findsOneWidget);
 
     await tester.pumpAndSettle();
 
@@ -45,9 +56,7 @@ Future<void> main() async {
     when(algorand.health()).thenAnswer((_) => Future.value(false));
 
     // Build our app and trigger a frame.
-    await tester.pumpWidget(AlgoApp(
-      initialRoute: MainScreen.routeName,
-    ));
+    await tester.pumpWidget(_appWithProviders());
 
     // Check that we show spinner when we wait for data
     expect(find.byType(CircularProgressIndicator), findsOneWidget);
@@ -56,7 +65,5 @@ Future<void> main() async {
 
     // Verify that we are showing no node connection text
     expect(find.byKey(Key('NO_NODE_CONNECTION')), findsOneWidget);
-
-    reset(algorand);
   });
 }

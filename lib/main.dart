@@ -8,7 +8,14 @@ Future<void> main() async {
   final routeName = MainScreen.routeName;
 
   runApp(
-    AlgoApp(initialRoute: routeName),
+    MultiProvider(
+      providers: [
+        Provider<Algorand>(
+          create: (_) => ServiceLocator().algorand,
+        ),
+      ],
+      child: AlgoApp(initialRoute: routeName),
+    ),
   );
 }
 
@@ -19,33 +26,26 @@ class AlgoApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        Provider<Algorand>(
-          create: (_) => ServiceLocator().algorand,
-        ),
-      ],
-      child: MaterialApp(
-        title: 'Algorand Wallet',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),
-        onGenerateRoute: (settings) {
-          late Widget page;
-          switch (settings.name) {
-            case MainScreen.routeName:
-              page = MainScreen();
-          }
-
-          return MaterialPageRoute<dynamic>(
-            builder: (context) {
-              return page;
-            },
-            settings: settings,
-          );
-        },
-        initialRoute: initialRoute,
+    return MaterialApp(
+      title: 'Algorand Wallet',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
       ),
+      onGenerateRoute: (settings) {
+        late Widget page;
+        switch (settings.name) {
+          case MainScreen.routeName:
+            page = MainScreen();
+        }
+
+        return MaterialPageRoute<dynamic>(
+          builder: (context) {
+            return page;
+          },
+          settings: settings,
+        );
+      },
+      initialRoute: initialRoute,
     );
   }
 }

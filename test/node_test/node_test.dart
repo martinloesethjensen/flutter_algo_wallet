@@ -31,8 +31,6 @@ void main() {
       verify(algorand.health());
 
       expect(await algorand.health(), true);
-
-      reset(algorand);
     });
 
     test('Health should return false', () async {
@@ -45,8 +43,6 @@ void main() {
       verify(algorand.health());
 
       expect(await algorand.health(), false);
-
-      reset(algorand);
     });
   });
 }

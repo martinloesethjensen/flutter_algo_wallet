@@ -47,7 +47,6 @@ class _MainScreenState extends State<MainScreen> {
     return FutureBuilder<bool>(
         future: algorand.health(),
         builder: (context, snapshot) {
-          print(snapshot.data.toString());
           if (!snapshot.hasData)
             return Scaffold(
               body: Center(
