@@ -6,17 +6,6 @@ import 'package:flutter_algo_wallet/screens/profile/profile.dart';
 import 'package:flutter_algo_wallet/screens/wallet/wallet.dart';
 import 'package:provider/provider.dart';
 
-final tabHandlers = <NavigationTab, Widget>{
-  NavigationTab(label: 'Dashboard', icon: Icons.house_outlined):
-      provideDashboardPage(),
-  NavigationTab(label: 'Wallet', icon: Icons.wallet_giftcard_outlined):
-      provideWalletPage(),
-  NavigationTab(label: 'Profile', icon: Icons.person_add_alt_outlined):
-      provideProfilePage(),
-};
-
-final tabs = tabHandlers.keys.toList();
-
 class MainScreen extends StatefulWidget {
   static const String routeName = '/';
 
@@ -29,6 +18,21 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   int _selectedIndex = 0;
 
+  final tabHandlers = <NavigationTab, Widget>{
+    NavigationTab(label: 'Dashboard', icon: Icons.house_outlined):
+        DashboardScreen(),
+    NavigationTab(label: 'Wallet', icon: Icons.wallet_giftcard_outlined):
+        WalletScreen(),
+    NavigationTab(label: 'Profile', icon: Icons.person_add_alt_outlined):
+        ProfileScreen(),
+  };
+
+  static const List<Widget> _widgetOptions = <Widget>[
+    DashboardScreen(),
+    WalletScreen(),
+    ProfileScreen(),
+  ];
+
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
@@ -38,10 +42,12 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     final algorand = context.watch<Algorand>();
+    final tabs = tabHandlers.keys.toList();
 
     return FutureBuilder<bool>(
         future: algorand.health(),
         builder: (context, snapshot) {
+          print(snapshot.data.toString());
           if (!snapshot.hasData)
             return Scaffold(
               body: Center(
@@ -60,12 +66,7 @@ class _MainScreenState extends State<MainScreen> {
             );
 
           return Scaffold(
-            body: SafeArea(
-              child: IndexedStack(
-                index: _selectedIndex,
-                children: tabHandlers.values.toList(),
-              ),
-            ),
+            body: _widgetOptions.elementAt(_selectedIndex),
             bottomNavigationBar: BottomNavigationBar(
               type: BottomNavigationBarType.fixed,
               showSelectedLabels: false,

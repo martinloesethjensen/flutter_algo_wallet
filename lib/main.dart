@@ -2,7 +2,6 @@ import 'package:algorand_dart/algorand_dart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_algo_wallet/screens/main_screen.dart';
 import 'package:flutter_algo_wallet/services/service_locator.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 
 Future<void> main() async {
