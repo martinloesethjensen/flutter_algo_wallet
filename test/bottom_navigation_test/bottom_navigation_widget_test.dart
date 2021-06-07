@@ -11,8 +11,8 @@ import 'package:flutter_test/flutter_test.dart';
 
 import 'package:mockito/mockito.dart';
 
+import '../node_test/node_test.mocks.dart';
 import '../test_utils.dart';
-import 'node_test.mocks.dart';
 
 Future<void> main() async {
   late Algorand algorand;
@@ -29,30 +29,10 @@ Future<void> main() async {
     // Build our app and trigger a frame.
     await tester.pumpWidget(appWithProviders(injectedAlgorand: algorand));
 
-    // Check that we show spinner when we wait for data
-    expect(find.byType(CircularProgressIndicator), findsOneWidget);
-
     await tester.pumpAndSettle();
 
     // Verify that our counter starts at 0.
     expect(find.text('Create a new wallet'), findsOneWidget);
     expect(find.text('Import existing wallet'), findsOneWidget);
-  });
-
-  testWidgets(
-      'Should show no connection text when there is no connection to the node',
-      (WidgetTester tester) async {
-    when(algorand.health()).thenAnswer((_) => Future.value(false));
-
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(appWithProviders(injectedAlgorand: algorand));
-
-    // Check that we show spinner when we wait for data
-    expect(find.byType(CircularProgressIndicator), findsOneWidget);
-
-    await tester.pumpAndSettle();
-
-    // Verify that we are showing no node connection text
-    expect(find.byKey(Key('NO_NODE_CONNECTION')), findsOneWidget);
   });
 }
