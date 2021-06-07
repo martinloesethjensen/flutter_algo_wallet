@@ -7,6 +7,7 @@
 
 import 'package:algorand_dart/algorand_dart.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_algo_wallet/navigation/navigation_provider.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:mockito/mockito.dart';
@@ -16,23 +17,27 @@ import '../test_utils.dart';
 
 Future<void> main() async {
   late Algorand algorand;
+  late BottomNavigationBarProvider navBarProvider;
 
   setUp(() {
     algorand = MockAlgorand();
+    navBarProvider = BottomNavigationBarProvider();
   });
 
-  testWidgets(
-      'Should show options for import and create wallet buttons when there is node connection',
+  testWidgets('Should change bottom navigation tab',
       (WidgetTester tester) async {
     when(algorand.health()).thenAnswer((_) => Future.value(true));
 
     // Build our app and trigger a frame.
     await tester.pumpWidget(appWithProviders(injectedAlgorand: algorand));
 
-    await tester.pumpAndSettle();
+    // Make sure currentIndex is 0
+    expect(navBarProvider.currentIndex, 0);
 
-    // Verify that our counter starts at 0.
-    expect(find.text('Create a new wallet'), findsOneWidget);
-    expect(find.text('Import existing wallet'), findsOneWidget);
+    expect(find.byKey(Key('DASHBOARD')), findsOneWidget);
+
+    await tester.pump();
+
+    //expect(navBarProvider.currentIndex, 2);
   });
 }

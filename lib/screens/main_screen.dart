@@ -20,11 +20,14 @@ class _MainScreenState extends State<MainScreen> {
   int _selectedIndex = 0;
 
   final tabHandlers = <NavigationTab, Widget>{
-    NavigationTab(label: 'Dashboard', icon: Icons.house_outlined):
-        DashboardScreen(),
-    NavigationTab(label: 'Wallet', icon: Icons.wallet_giftcard_outlined):
-        WalletScreen(),
-    NavigationTab(label: 'Profile', icon: Icons.person_add_alt_outlined):
+    NavigationTab(label: 'Dashboard', icon: Icons.account_balance_outlined):
+        DashboardScreen(
+      key: Key('DASHBOARD'),
+    ),
+    NavigationTab(
+        label: 'Wallet',
+        icon: Icons.indeterminate_check_box_outlined): WalletScreen(),
+    NavigationTab(label: 'Profile', icon: Icons.account_box_outlined):
         ProfileScreen(),
   };
 
