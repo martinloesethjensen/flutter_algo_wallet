@@ -1,6 +1,7 @@
 import 'package:algorand_dart/algorand_dart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_algo_wallet/models/navigation/navigation_tab.dart';
+import 'package:flutter_algo_wallet/navigation/navigation_provider.dart';
 import 'package:flutter_algo_wallet/screens/dashboard/dashboard.dart';
 import 'package:flutter_algo_wallet/screens/profile/profile.dart';
 import 'package:flutter_algo_wallet/screens/wallet/wallet.dart';
@@ -33,16 +34,12 @@ class _MainScreenState extends State<MainScreen> {
     ProfileScreen(),
   ];
 
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     final algorand = context.watch<Algorand>();
     final tabs = tabHandlers.keys.toList();
+    final navBarProvider = context.watch<BottomNavigationBarProvider>();
+    final currentIndex = navBarProvider.currentIndex;
 
     return FutureBuilder<bool>(
         future: algorand.health(),
@@ -65,13 +62,13 @@ class _MainScreenState extends State<MainScreen> {
             );
 
           return Scaffold(
-            body: _widgetOptions.elementAt(_selectedIndex),
+            body: _widgetOptions.elementAt(currentIndex),
             bottomNavigationBar: BottomNavigationBar(
               type: BottomNavigationBarType.fixed,
               showSelectedLabels: false,
               showUnselectedLabels: false,
-              currentIndex: _selectedIndex,
-              onTap: _onItemTapped,
+              currentIndex: currentIndex,
+              onTap: (index) => {navBarProvider.currentIndex = index},
               items: List.generate(
                 tabs.length,
                 (index) => BottomNavigationBarItem(

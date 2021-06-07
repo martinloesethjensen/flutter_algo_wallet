@@ -7,6 +7,7 @@
 
 import 'package:algorand_dart/algorand_dart.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_algo_wallet/navigation/navigation_provider.dart';
 import 'package:flutter_algo_wallet/screens/main_screen.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -14,6 +15,7 @@ import 'package:flutter_algo_wallet/main.dart';
 import 'package:mockito/mockito.dart';
 import 'package:provider/provider.dart';
 
+import '../test_utils.dart';
 import 'node_test.mocks.dart';
 
 Future<void> main() async {
@@ -23,22 +25,13 @@ Future<void> main() async {
     algorand = MockAlgorand();
   });
 
-  _appWithProviders() => MultiProvider(
-        providers: [
-          Provider<Algorand>(create: (_) => algorand),
-        ],
-        child: AlgoApp(
-          initialRoute: MainScreen.routeName,
-        ),
-      );
-
   testWidgets(
       'Should show options for import and create wallet buttons when there is node connection',
       (WidgetTester tester) async {
     when(algorand.health()).thenAnswer((_) => Future.value(true));
 
     // Build our app and trigger a frame.
-    await tester.pumpWidget(_appWithProviders());
+    await tester.pumpWidget(appWithProviders(injectedAlgorand: algorand));
 
     // Check that we show spinner when we wait for data
     expect(find.byType(CircularProgressIndicator), findsOneWidget);
@@ -56,7 +49,7 @@ Future<void> main() async {
     when(algorand.health()).thenAnswer((_) => Future.value(false));
 
     // Build our app and trigger a frame.
-    await tester.pumpWidget(_appWithProviders());
+    await tester.pumpWidget(appWithProviders(injectedAlgorand: algorand));
 
     // Check that we show spinner when we wait for data
     expect(find.byType(CircularProgressIndicator), findsOneWidget);
