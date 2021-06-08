@@ -1,5 +1,6 @@
 import 'package:algorand_dart/algorand_dart.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_algo_wallet/account_provider.dart';
 import 'package:flutter_algo_wallet/navigation/navigation_provider.dart';
 import 'package:flutter_algo_wallet/screens/main_screen.dart';
 import 'package:flutter_algo_wallet/services/service_locator.dart';
@@ -13,6 +14,7 @@ Future<void> main() async {
       providers: [
         Provider<Algorand>(create: (_) => ServiceLocator().algorand),
         ChangeNotifierProvider(create: (_) => BottomNavigationBarProvider()),
+        ChangeNotifierProvider(create: (_) => AccountProvider())
       ],
       child: AlgoApp(initialRoute: routeName),
     ),
