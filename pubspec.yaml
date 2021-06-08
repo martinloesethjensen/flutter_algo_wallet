@@ -37,7 +37,7 @@ dependencies:
   hive: ^2.0.4
   hive_flutter: ^1.0.0
   provider: ^5.0.0
-
+  equatable: ^2.0.2
 
 dev_dependencies:
   flutter_test:

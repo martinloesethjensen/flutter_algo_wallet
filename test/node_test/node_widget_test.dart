@@ -9,13 +9,12 @@ import 'package:algorand_dart/algorand_dart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:flutter_algo_wallet/main.dart';
 import 'package:mockito/mockito.dart';
-import 'package:provider/provider.dart';
 
+import '../test_utils.dart';
 import 'node_test.mocks.dart';
 
-void main() {
+Future<void> main() async {
   late Algorand algorand;
 
   setUp(() {
@@ -23,17 +22,12 @@ void main() {
   });
 
   testWidgets(
-      'Should show option to create or import wallet buttons, when there is node connection',
+      'Should show options for import and create wallet buttons when there is node connection',
       (WidgetTester tester) async {
     when(algorand.health()).thenAnswer((_) => Future.value(true));
 
     // Build our app and trigger a frame.
-    await tester.pumpWidget(
-      Provider<Algorand>(
-        create: (_) => algorand,
-        child: AlgoApp(),
-      ),
-    );
+    await tester.pumpWidget(appWithProviders(injectedAlgorand: algorand));
 
     // Check that we show spinner when we wait for data
     expect(find.byType(CircularProgressIndicator), findsOneWidget);
@@ -41,8 +35,8 @@ void main() {
     await tester.pumpAndSettle();
 
     // Verify that our counter starts at 0.
-    expect(find.byKey(Key('CREATE_NEW_WALLET_BUTTON')), findsOneWidget);
-    expect(find.byKey(Key('IMPORT_WALLET_BUTTON')), findsOneWidget);
+    expect(find.text('Create a new wallet'), findsOneWidget);
+    expect(find.text('Import existing wallet'), findsOneWidget);
   });
 
   testWidgets(
@@ -51,12 +45,7 @@ void main() {
     when(algorand.health()).thenAnswer((_) => Future.value(false));
 
     // Build our app and trigger a frame.
-    await tester.pumpWidget(
-      Provider<Algorand>(
-        create: (_) => algorand,
-        child: AlgoApp(),
-      ),
-    );
+    await tester.pumpWidget(appWithProviders(injectedAlgorand: algorand));
 
     // Check that we show spinner when we wait for data
     expect(find.byType(CircularProgressIndicator), findsOneWidget);

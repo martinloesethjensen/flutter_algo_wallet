@@ -1,94 +1,51 @@
 import 'package:algorand_dart/algorand_dart.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_algo_wallet/navigation/navigation_provider.dart';
+import 'package:flutter_algo_wallet/screens/main_screen.dart';
 import 'package:flutter_algo_wallet/services/service_locator.dart';
 import 'package:provider/provider.dart';
 
-void main() {
+Future<void> main() async {
+  final routeName = MainScreen.routeName;
+
   runApp(
     MultiProvider(
       providers: [
-        Provider<Algorand>(
-          create: (context) => ServiceLocator().algorand,
-        ),
+        Provider<Algorand>(create: (_) => ServiceLocator().algorand),
+        ChangeNotifierProvider(create: (_) => BottomNavigationBarProvider()),
       ],
-      child: AlgoApp(),
+      child: AlgoApp(initialRoute: routeName),
     ),
   );
 }
 
 class AlgoApp extends StatelessWidget {
-  const AlgoApp({Key? key}) : super(key: key);
+  final String initialRoute;
+
+  const AlgoApp({Key? key, this.initialRoute = '/'}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final _algorand = context.watch<Algorand>();
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Algorand Wallet',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: FutureBuilder<bool>(
-          future: _algorand.health(),
-          builder: (context, snapshot) {
-            if (!snapshot.hasData)
-              return Scaffold(
-                body: Center(
-                  child: CircularProgressIndicator(),
-                ),
-              );
+      onGenerateRoute: (settings) {
+        late Widget page;
+        switch (settings.name) {
+          case MainScreen.routeName:
+            page = MainScreen();
+        }
 
-            if (!snapshot.data!)
-              return Scaffold(
-                body: Center(
-                  child: Text(
-                    'No connection to node',
-                    key: Key('NO_NODE_CONNECTION'),
-                  ),
-                ),
-              );
-            return MainScreen();
-          }),
-    );
-  }
-}
-
-class MainScreen extends StatelessWidget {
-  MainScreen({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Import or create wallet'),
-      ),
-      body: Center(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            OutlinedButton(
-              key: Key('CREATE_NEW_WALLET_BUTTON'),
-              onPressed: () {}, // TODO
-              child: Text('Create a new wallet'),
-              style: ButtonStyle(
-                fixedSize: MaterialStateProperty.all<Size>(
-                  Size(double.infinity, 75),
-                ),
-              ),
-            ),
-            SizedBox(width: 10),
-            OutlinedButton(
-              key: Key('IMPORT_WALLET_BUTTON'),
-              onPressed: () {}, // TODO
-              child: Text('Import existing wallet'),
-              style: ButtonStyle(
-                fixedSize: MaterialStateProperty.all<Size>(
-                  Size(double.infinity, 75),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
+        return MaterialPageRoute<dynamic>(
+          builder: (context) {
+            return page;
+          },
+          settings: settings,
+        );
+      },
+      initialRoute: initialRoute,
     );
   }
 }
