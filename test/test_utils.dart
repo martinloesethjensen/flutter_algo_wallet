@@ -1,4 +1,5 @@
 import 'package:algorand_dart/algorand_dart.dart';
+import 'package:flutter_algo_wallet/account_provider.dart';
 import 'package:flutter_algo_wallet/main.dart';
 import 'package:flutter_algo_wallet/navigation/navigation_provider.dart';
 import 'package:flutter_algo_wallet/screens/main_screen.dart';
@@ -9,6 +10,7 @@ import 'node_test/node_test.mocks.dart';
 appWithProviders({
   injectedAlgorand,
   BottomNavigationBarProvider? injectedBottomNavBar,
+  AccountProvider? injectedAccount,
 }) =>
     MultiProvider(
       providers: [
@@ -18,6 +20,9 @@ appWithProviders({
         ChangeNotifierProvider(
           create: (_) => injectedBottomNavBar ?? BottomNavigationBarProvider(),
         ),
+        ChangeNotifierProvider(
+          create: (_) => injectedAccount ?? AccountProvider(),
+        )
       ],
       child: AlgoApp(
         initialRoute: MainScreen.routeName,
