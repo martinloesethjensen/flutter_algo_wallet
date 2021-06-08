@@ -1,7 +1,7 @@
 import 'package:algorand_dart/algorand_dart.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_algo_wallet/models/navigation/navigation_tab.dart';
-import 'package:flutter_algo_wallet/navigation/navigation_provider.dart';
+import 'package:flutter_algo_wallet/bottom_navbar/bottom_navbar_provider.dart';
+import 'package:flutter_algo_wallet/bottom_navbar/bottom_navbar_tab.dart';
 import 'package:flutter_algo_wallet/screens/dashboard/dashboard.dart';
 import 'package:flutter_algo_wallet/screens/profile/profile.dart';
 import 'package:flutter_algo_wallet/screens/wallet/wallet.dart';

@@ -1,4 +1,4 @@
-import 'package:flutter_algo_wallet/navigation/navigation_provider.dart';
+import 'package:flutter_algo_wallet/bottom_navbar/bottom_navbar_provider.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
