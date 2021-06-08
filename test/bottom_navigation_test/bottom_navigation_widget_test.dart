@@ -29,15 +29,26 @@ Future<void> main() async {
     when(algorand.health()).thenAnswer((_) => Future.value(true));
 
     // Build our app and trigger a frame.
-    await tester.pumpWidget(appWithProviders(injectedAlgorand: algorand));
+    await tester.pumpWidget(appWithProviders(
+      injectedAlgorand: algorand,
+      injectedBottomNavBar: navBarProvider,
+    ));
+
+    await tester.pumpAndSettle();
 
     // Make sure currentIndex is 0
     expect(navBarProvider.currentIndex, 0);
 
     expect(find.byKey(Key('DASHBOARD')), findsOneWidget);
 
-    await tester.pump();
+    final finder = find.byTooltip('Profile');
 
-    //expect(navBarProvider.currentIndex, 2);
+    await tester.tap(finder);
+
+    await tester.pumpAndSettle();
+
+    expect(find.byKey(Key('PROFILE')), findsOneWidget);
+
+    expect(navBarProvider.currentIndex, 2);
   });
 }

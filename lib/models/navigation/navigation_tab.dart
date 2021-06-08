@@ -5,7 +5,7 @@ class NavigationTab extends Equatable {
   final String label;
   final IconData icon;
 
-  NavigationTab({
+  const NavigationTab({
     required this.label,
     required this.icon,
   });

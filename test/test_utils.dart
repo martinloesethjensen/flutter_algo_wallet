@@ -6,10 +6,18 @@ import 'package:provider/provider.dart';
 
 import 'node_test/node_test.mocks.dart';
 
-appWithProviders({injectedAlgorand}) => MultiProvider(
+appWithProviders({
+  injectedAlgorand,
+  BottomNavigationBarProvider? injectedBottomNavBar,
+}) =>
+    MultiProvider(
       providers: [
-        Provider<Algorand>(create: (_) => injectedAlgorand ?? MockAlgorand()),
-        ChangeNotifierProvider(create: (_) => BottomNavigationBarProvider()),
+        Provider<Algorand>(
+          create: (_) => injectedAlgorand ?? MockAlgorand(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => injectedBottomNavBar ?? BottomNavigationBarProvider(),
+        ),
       ],
       child: AlgoApp(
         initialRoute: MainScreen.routeName,
