@@ -17,30 +17,22 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  int _selectedIndex = 0;
-
-  final tabHandlers = <NavigationTab, Widget>{
-    NavigationTab(label: 'Dashboard', icon: Icons.account_balance_outlined):
-        DashboardScreen(
-      key: Key('DASHBOARD'),
-    ),
+  static const tabs = <NavigationTab>[
+    NavigationTab(label: 'Dashboard', icon: Icons.account_balance_outlined),
     NavigationTab(
-        label: 'Wallet',
-        icon: Icons.indeterminate_check_box_outlined): WalletScreen(),
-    NavigationTab(label: 'Profile', icon: Icons.account_box_outlined):
-        ProfileScreen(),
-  };
+        label: 'Wallet', icon: Icons.indeterminate_check_box_outlined),
+    NavigationTab(label: 'Profile', icon: Icons.account_box_outlined),
+  ];
 
   static const List<Widget> _widgetOptions = <Widget>[
-    DashboardScreen(),
-    WalletScreen(),
-    ProfileScreen(),
+    DashboardScreen(key: Key('DASHBOARD')),
+    WalletScreen(key: Key('WALLET')),
+    ProfileScreen(key: Key('PROFILE')),
   ];
 
   @override
   Widget build(BuildContext context) {
     final algorand = context.watch<Algorand>();
-    final tabs = tabHandlers.keys.toList();
     final navBarProvider = context.watch<BottomNavigationBarProvider>();
     final currentIndex = navBarProvider.currentIndex;
 
