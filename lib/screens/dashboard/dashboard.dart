@@ -1,6 +1,7 @@
 import 'package:algorand_dart/algorand_dart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_algo_wallet/global_providers/account/account_provider.dart';
+import 'package:flutter_algo_wallet/theme/theme.dart';
 import 'package:provider/provider.dart';
 
 import 'dashboard_screen_provider.dart';
@@ -16,18 +17,23 @@ class DashboardScreen extends StatelessWidget {
         context.watch<DashboardScreenModeProvider>();
     print(dashboardScreen.currentWalletStatus);
     return Center(
-        child: (() {
-      switch (dashboardScreen.currentWalletStatus) {
-        case DashboardScreenMode.NO_WALLET:
-          return NoWalletWidget();
-        case DashboardScreenMode.CREATE_WALLET:
-          return CreateWalletWidget();
-        case DashboardScreenMode.IMPORT_WALLET:
-          return ImportWalletWidget();
-        case DashboardScreenMode.LOADED_WALLET:
-          return LoadedWalletWidget();
-      }
-    }()));
+      child: getDashboardScreen(dashboardScreen.currentWalletStatus),
+    );
+  }
+
+  Widget getDashboardScreen(DashboardScreenMode dashboardScreenMode) {
+    switch (dashboardScreenMode) {
+      case DashboardScreenMode.NO_WALLET:
+        return NoWalletWidget();
+      case DashboardScreenMode.CREATE_WALLET:
+        return CreateWalletWidget();
+      case DashboardScreenMode.IMPORT_WALLET:
+        return ImportWalletWidget();
+      case DashboardScreenMode.LOADED_WALLET:
+        return LoadedWalletWidget();
+      default:
+        return NoWalletWidget();
+    }
   }
 }
 
@@ -40,8 +46,7 @@ class NoWalletWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final algorand = context.watch<Algorand>();
     final dashboardScreenMode = context.watch<DashboardScreenModeProvider>();
-
-    var account = context.watch<AccountProvider>();
+    final account = context.watch<AccountProvider>();
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -53,7 +58,7 @@ class NoWalletWidget extends StatelessWidget {
             account.account = createdAccount;
             dashboardScreenMode.currentWalletStatus =
                 DashboardScreenMode.CREATE_WALLET;
-          }, // TODO
+          },
           child: Text('Create a new wallet'),
           style: ButtonStyle(
             fixedSize: MaterialStateProperty.all<Size>(
@@ -85,25 +90,28 @@ class CreateWalletWidget extends StatelessWidget {
     final loadedAccount = context.watch<AccountProvider>();
     final dashboardScreenMode = context.watch<DashboardScreenModeProvider>();
 
-    return Container(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text("Public Address: ${loadedAccount.account.publicAddress}"),
-          FutureBuilder(
-              future: loadedAccount.account.seedPhrase,
-              builder:
-                  (BuildContext context, AsyncSnapshot<List<String>> snapshot) {
-                return Text("Mnemonic Phrase:\n${snapshot.data?.join(", ")}");
-              }),
-          OutlinedButton(
-            onPressed: () {
-              dashboardScreenMode.currentWalletStatus =
-                  DashboardScreenMode.LOADED_WALLET;
-            },
-            child: Text("Continue"),
-          )
-        ],
+    return Padding(
+      padding: const EdgeInsets.all(paddingSizeDefault),
+      child: Container(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text("Public Address: ${loadedAccount.account.publicAddress}"),
+            FutureBuilder(
+                future: loadedAccount.account.seedPhrase,
+                builder: (BuildContext context,
+                    AsyncSnapshot<List<String>> snapshot) {
+                  return Text("Mnemonic Phrase:\n${snapshot.data?.join(", ")}");
+                }),
+            OutlinedButton(
+              onPressed: () {
+                dashboardScreenMode.currentWalletStatus =
+                    DashboardScreenMode.LOADED_WALLET;
+              },
+              child: Text("Continue"),
+            )
+          ],
+        ),
       ),
     );
   }

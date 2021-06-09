@@ -9,7 +9,8 @@ import 'package:algorand_dart/src/models/accounts/account_model.dart' as _i5;
 import 'package:algorand_dart/src/models/addresses/address_model.dart' as _i4;
 import 'package:cryptography/src/cryptography/simple_key_pair.dart' as _i3;
 import 'package:cryptography/src/cryptography/simple_public_key.dart' as _i2;
-import 'package:flutter_algo_wallet/account_provider.dart' as _i7;
+import 'package:flutter_algo_wallet/global_providers/account/account_provider.dart'
+    as _i7;
 import 'package:mockito/mockito.dart' as _i1;
 
 // ignore_for_file: avoid_redundant_argument_values

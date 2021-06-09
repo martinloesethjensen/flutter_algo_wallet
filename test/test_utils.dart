@@ -1,6 +1,6 @@
 import 'package:algorand_dart/algorand_dart.dart';
-import 'package:flutter_algo_wallet/account_provider.dart';
 import 'package:flutter_algo_wallet/bottom_navbar/bottom_navbar_provider.dart';
+import 'package:flutter_algo_wallet/global_providers/account/account_provider.dart';
 import 'package:flutter_algo_wallet/main.dart';
 import 'package:flutter_algo_wallet/screens/dashboard/dashboard_screen_provider.dart';
 import 'package:flutter_algo_wallet/screens/main_screen/main_screen.dart';

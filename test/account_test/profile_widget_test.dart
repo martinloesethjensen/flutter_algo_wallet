@@ -8,6 +8,7 @@
 import 'package:algorand_dart/algorand_dart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_algo_wallet/bottom_navbar/bottom_navbar_provider.dart';
+import 'package:flutter_algo_wallet/screens/dashboard/dashboard_screen_provider.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
@@ -20,24 +21,26 @@ Future<void> main() async {
   late Account account;
   late Algorand algorand;
   late BottomNavigationBarProvider navBarProvider;
+  late DashboardScreenModeProvider dashboardScreenModeProvider;
 
   setUp(() {
     account = MockAccount();
     algorand = MockAlgorand();
     navBarProvider = BottomNavigationBarProvider();
+    dashboardScreenModeProvider = DashboardScreenModeProvider();
   });
 
   testWidgets(
-      'Should show public address, seed phrase, and fund account button',
+      'Should show public address, seed phrase, and fund account button, when wallet if loaded',
       (WidgetTester tester) async {
     when(algorand.health()).thenAnswer((_) => Future.value(true));
 
     // Build our app and trigger a frame.
     await tester.pumpWidget(
       appWithProviders(
-        injectedAlgorand: algorand,
-        injectedBottomNavBar: navBarProvider,
-      ),
+          injectedAlgorand: algorand,
+          injectedBottomNavBar: navBarProvider,
+          injectedDashboardScreenMode: dashboardScreenModeProvider),
     );
 
     // Check that we show spinner when we wait for data
@@ -52,6 +55,6 @@ Future<void> main() async {
 
     await tester.pumpAndSettle();
 
-    expect(find.byKey(Key('FUND_ACCOUNT')), findsOneWidget);
+    expect(find.byKey(Key('PROFILE')), findsOneWidget);
   });
 }

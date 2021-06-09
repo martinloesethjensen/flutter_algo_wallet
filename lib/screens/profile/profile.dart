@@ -1,7 +1,7 @@
-import 'package:algorand_dart/algorand_dart.dart';
 import 'package:clipboard/clipboard.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_algo_wallet/account_provider.dart';
+import 'package:flutter_algo_wallet/global_providers/account/account_provider.dart';
+import 'package:flutter_algo_wallet/screens/dashboard/dashboard_screen_provider.dart';
 import 'package:flutter_algo_wallet/widgets/spacing.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_algo_wallet/theme/theme.dart';
@@ -14,9 +14,11 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final accountProvider = context.watch<AccountProvider>();
+    final dashboardProvider = context.watch<DashboardScreenModeProvider>();
 
-    if (accountProvider.account == null) {
+    if (dashboardProvider.currentWalletStatus !=
+        DashboardScreenMode.LOADED_WALLET) {
+      // TODO: WIDGET TEST THIS
       return Container(
         child: Center(
           child: Text('No account created or wallet'),
@@ -24,9 +26,11 @@ class ProfileScreen extends StatelessWidget {
       );
     }
 
+    final accountProvider = context.watch<AccountProvider>();
     final account = accountProvider.account;
+
     return Padding(
-      padding: const EdgeInsets.all(20.0),
+      padding: const EdgeInsets.all(paddingSizeDefault),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [

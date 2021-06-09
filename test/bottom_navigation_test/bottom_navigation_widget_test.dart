@@ -20,7 +20,9 @@ import '../test_utils.dart';
 Future<void> main() async {
   late Algorand algorand;
   late BottomNavigationBarProvider navBarProvider;
+  // ignore: unused_local_variable
   late AccountProvider accountProvider;
+  // ignore: unused_local_variable
   late Account account;
 
   setUp(() {
