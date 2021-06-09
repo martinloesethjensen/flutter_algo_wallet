@@ -24,6 +24,8 @@ class DashboardScreen extends StatelessWidget {
           return CreateWalletWidget();
         case DashboardScreenMode.IMPORT_WALLET:
           return ImportWalletWidget();
+        case DashboardScreenMode.LOADED_WALLET:
+          return LoadedWalletWidget();
       }
     }()));
   }
@@ -36,12 +38,22 @@ class NoWalletWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final algorand = context.watch<Algorand>();
+    final dashboardScreenMode = context.watch<DashboardScreenModeProvider>();
+
+    var account = context.watch<AccountProvider>();
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         OutlinedButton(
           key: Key('CREATE_NEW_WALLET_BUTTON'),
-          onPressed: () {}, // TODO
+          onPressed: () async {
+            final Account createdAccount = await algorand.createAccount();
+            account.account = createdAccount;
+            dashboardScreenMode.currentWalletStatus =
+                DashboardScreenMode.CREATE_WALLET;
+          }, // TODO
           child: Text('Create a new wallet'),
           style: ButtonStyle(
             fixedSize: MaterialStateProperty.all<Size>(
@@ -70,20 +82,26 @@ class CreateWalletWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final algorand = context.watch<Algorand>();
-    var account = context.watch<AccountProvider>();
+    final loadedAccount = context.watch<AccountProvider>();
+    final dashboardScreenMode = context.watch<DashboardScreenModeProvider>();
 
     return Container(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text("Account: ${account.account.publicKey}"),
+          Text("Public Address: ${loadedAccount.account.publicAddress}"),
+          FutureBuilder(
+              future: loadedAccount.account.seedPhrase,
+              builder:
+                  (BuildContext context, AsyncSnapshot<List<String>> snapshot) {
+                return Text("Mnemonic Phrase:\n${snapshot.data?.join(", ")}");
+              }),
           OutlinedButton(
-            onPressed: () async {
-              final Account createdAccount = await algorand.createAccount();
-              account.account = createdAccount;
+            onPressed: () {
+              dashboardScreenMode.currentWalletStatus =
+                  DashboardScreenMode.LOADED_WALLET;
             },
-            child: Text("test"),
+            child: Text("Continue"),
           )
         ],
       ),
@@ -93,6 +111,17 @@ class CreateWalletWidget extends StatelessWidget {
 
 class ImportWalletWidget extends StatelessWidget {
   const ImportWalletWidget();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Container(),
+    );
+  }
+}
+
+class LoadedWalletWidget extends StatelessWidget {
+  const LoadedWalletWidget();
 
   @override
   Widget build(BuildContext context) {
