@@ -1,4 +1,5 @@
 import 'package:algorand_dart/algorand_dart.dart';
+import 'package:flutter_algo_wallet/account_provider.dart';
 import 'package:test/test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
@@ -6,10 +7,12 @@ import 'package:mockito/mockito.dart';
 import '../node_test/node_test.mocks.dart';
 import 'account_test.mocks.dart';
 
-@GenerateMocks([Account])
+@GenerateMocks([Account, AccountProvider])
 void main() {
   late Account account;
   late Algorand algorand;
+  // ignore: unused_local_variable
+  late AccountProvider accountProvider;
 
   // Random Algorand public address
   final publicAddress =
@@ -47,6 +50,7 @@ void main() {
   setUp(() {
     account = MockAccount();
     algorand = MockAlgorand();
+    accountProvider = MockAccountProvider();
   });
 
   group('Algorand account', () {

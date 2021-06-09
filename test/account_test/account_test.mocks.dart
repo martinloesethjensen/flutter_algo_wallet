@@ -3,11 +3,13 @@
 // Do not manually edit this file.
 
 import 'dart:async' as _i6;
+import 'dart:ui' as _i8;
 
 import 'package:algorand_dart/src/models/accounts/account_model.dart' as _i5;
 import 'package:algorand_dart/src/models/addresses/address_model.dart' as _i4;
 import 'package:cryptography/src/cryptography/simple_key_pair.dart' as _i3;
 import 'package:cryptography/src/cryptography/simple_public_key.dart' as _i2;
+import 'package:flutter_algo_wallet/account_provider.dart' as _i7;
 import 'package:mockito/mockito.dart' as _i1;
 
 // ignore_for_file: avoid_redundant_argument_values
@@ -16,11 +18,14 @@ import 'package:mockito/mockito.dart' as _i1;
 // ignore_for_file: prefer_const_constructors
 // ignore_for_file: unnecessary_parenthesis
 
+// ignore: subtype_of_sealed_class
 class _FakeSimplePublicKey extends _i1.Fake implements _i2.SimplePublicKey {}
 
 class _FakeSimpleKeyPair extends _i1.Fake implements _i3.SimpleKeyPair {}
 
 class _FakeAddress extends _i1.Fake implements _i4.Address {}
+
+class _FakeAccount extends _i1.Fake implements _i5.Account {}
 
 /// A class which mocks [Account].
 ///
@@ -50,4 +55,40 @@ class MockAccount extends _i1.Mock implements _i5.Account {
       (super.noSuchMethod(Invocation.getter(#seedPhrase),
               returnValue: Future<List<String>>.value(<String>[]))
           as _i6.Future<List<String>>);
+}
+
+/// A class which mocks [AccountProvider].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockAccountProvider extends _i1.Mock implements _i7.AccountProvider {
+  MockAccountProvider() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i5.Account get account => (super.noSuchMethod(Invocation.getter(#account),
+      returnValue: _FakeAccount()) as _i5.Account);
+  @override
+  set account(_i5.Account? account) =>
+      super.noSuchMethod(Invocation.setter(#account, account),
+          returnValueForMissingStub: null);
+  @override
+  bool get hasListeners =>
+      (super.noSuchMethod(Invocation.getter(#hasListeners), returnValue: false)
+          as bool);
+  @override
+  void addListener(_i8.VoidCallback? listener) =>
+      super.noSuchMethod(Invocation.method(#addListener, [listener]),
+          returnValueForMissingStub: null);
+  @override
+  void removeListener(_i8.VoidCallback? listener) =>
+      super.noSuchMethod(Invocation.method(#removeListener, [listener]),
+          returnValueForMissingStub: null);
+  @override
+  void dispose() => super.noSuchMethod(Invocation.method(#dispose, []),
+      returnValueForMissingStub: null);
+  @override
+  void notifyListeners() =>
+      super.noSuchMethod(Invocation.method(#notifyListeners, []),
+          returnValueForMissingStub: null);
 }

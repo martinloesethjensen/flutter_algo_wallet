@@ -57,7 +57,7 @@ class _MainScreenState extends State<MainScreen> {
             );
 
           return Scaffold(
-            body: _widgetOptions.elementAt(currentIndex),
+            body: SafeArea(child: _widgetOptions.elementAt(currentIndex)),
             bottomNavigationBar: BottomNavigationBar(
               type: BottomNavigationBarType.fixed,
               showSelectedLabels: false,

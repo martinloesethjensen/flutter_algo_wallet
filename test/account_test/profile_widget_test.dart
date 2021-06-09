@@ -6,38 +6,52 @@
 // tree, read text, and verify that the values of widget properties are correct.
 
 import 'package:algorand_dart/algorand_dart.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_algo_wallet/navigation/navigation_provider.dart';
 import 'package:flutter_test/flutter_test.dart';
-
 import 'package:mockito/mockito.dart';
 
+import '../node_test/node_test.mocks.dart';
 import '../test_utils.dart';
 import 'account_test.mocks.dart';
 
 Future<void> main() async {
+  // ignore: unused_local_variable
   late Account account;
+  late Algorand algorand;
+  late BottomNavigationBarProvider navBarProvider;
 
   setUp(() {
     account = MockAccount();
+    algorand = MockAlgorand();
+    navBarProvider = BottomNavigationBarProvider();
   });
 
   testWidgets(
-      'Should show options for import and create wallet buttons when there is node connection',
-      (WidgetTester tester) async {});
-
-  testWidgets(
-      'Should show no connection text when there is no connection to the node',
+      'Should show public address, seed phrase, and fund account button',
       (WidgetTester tester) async {
-    // when(algorand.health()).thenAnswer((_) => Future.value(false));
+    when(algorand.health()).thenAnswer((_) => Future.value(true));
 
-    // // Build our app and trigger a frame.
-    // await tester.pumpWidget(appWithProviders(injectedAlgorand: algorand));
+    // Build our app and trigger a frame.
+    await tester.pumpWidget(
+      appWithProviders(
+        injectedAlgorand: algorand,
+        injectedBottomNavBar: navBarProvider,
+      ),
+    );
 
-    // // Check that we show spinner when we wait for data
-    // expect(find.byType(CircularProgressIndicator), findsOneWidget);
+    // Check that we show spinner when we wait for data
+    expect(find.byType(CircularProgressIndicator), findsOneWidget);
 
-    // await tester.pumpAndSettle();
+    await tester.pumpAndSettle();
 
-    // // Verify that we are showing no node connection text
-    // expect(find.byKey(Key('NO_NODE_CONNECTION')), findsOneWidget);
+    // Change to profile tab
+    navBarProvider.currentIndex = 2;
+    // Make sure currentIndex is 2
+    expect(navBarProvider.currentIndex, 2);
+
+    await tester.pumpAndSettle();
+
+    expect(find.byKey(Key('FUND_ACCOUNT')), findsOneWidget);
   });
 }
