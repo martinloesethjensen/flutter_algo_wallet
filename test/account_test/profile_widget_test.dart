@@ -7,7 +7,7 @@
 
 import 'package:algorand_dart/algorand_dart.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_algo_wallet/navigation/navigation_provider.dart';
+import 'package:flutter_algo_wallet/bottom_navbar/bottom_navbar_provider.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
