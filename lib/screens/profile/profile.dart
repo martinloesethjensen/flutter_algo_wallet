@@ -1,7 +1,6 @@
-import 'package:algorand_dart/algorand_dart.dart';
 import 'package:clipboard/clipboard.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_algo_wallet/account_provider.dart';
+import 'package:flutter_algo_wallet/global_providers/account/account_provider.dart';
 import 'package:flutter_algo_wallet/screens/dashboard/dashboard_screen_provider.dart';
 import 'package:flutter_algo_wallet/widgets/spacing.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -19,7 +18,7 @@ class ProfileScreen extends StatelessWidget {
 
     if (dashboardProvider.currentWalletStatus !=
         DashboardScreenMode.LOADED_WALLET) {
-      // TODO: MIDGET TEST THIS
+      // TODO: WIDGET TEST THIS
       return Container(
         child: Center(
           child: Text('No account created or wallet'),
@@ -27,120 +26,121 @@ class ProfileScreen extends StatelessWidget {
       );
     }
 
-    return Builder((context) {
-      return Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            /// Account address
-            Text(
-              'Account',
-              style: boldTextStyle.copyWith(fontSize: fontSizeMedium),
-            ),
-            VerticalSpacing(of: marginSizeSmall),
-            GestureDetector(
-              onTap: () async {
-                await FlutterClipboard.copy(account.publicAddress);
+    final accountProvider = context.watch<AccountProvider>();
+    final account = accountProvider.account;
 
-                final snackBar = SnackBar(
-                  behavior: SnackBarBehavior.floating,
-                  content: Text('Algorand address copied to clipboard'),
-                );
+    return Padding(
+      padding: const EdgeInsets.all(paddingSizeDefault),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          /// Account address
+          Text(
+            'Account',
+            style: boldTextStyle.copyWith(fontSize: fontSizeMedium),
+          ),
+          VerticalSpacing(of: marginSizeSmall),
+          GestureDetector(
+            onTap: () async {
+              await FlutterClipboard.copy(account.publicAddress);
 
-                ScaffoldMessenger.of(context).showSnackBar(snackBar);
-              },
-              child: RichText(
-                text: TextSpan(
-                  children: [
-                    TextSpan(
-                      text: account.publicAddress,
-                      style: regularTextStyle.copyWith(fontSize: fontSizeSmall),
-                    ),
-                    WidgetSpan(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                        child: Icon(
-                          Icons.copy,
-                          size: 20,
-                        ),
+              final snackBar = SnackBar(
+                behavior: SnackBarBehavior.floating,
+                content: Text('Algorand address copied to clipboard'),
+              );
+
+              ScaffoldMessenger.of(context).showSnackBar(snackBar);
+            },
+            child: RichText(
+              text: TextSpan(
+                children: [
+                  TextSpan(
+                    text: account.publicAddress,
+                    style: regularTextStyle.copyWith(fontSize: fontSizeSmall),
+                  ),
+                  WidgetSpan(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: Icon(
+                        Icons.copy,
+                        size: 20,
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
+          ),
 
-            VerticalSpacing(of: marginSizeDefault),
+          VerticalSpacing(of: marginSizeDefault),
 
-            /// Seed phrase
-            Text(
-              'Word list',
-              style: boldTextStyle.copyWith(fontSize: fontSizeMedium),
-            ),
-            VerticalSpacing(of: marginSizeSmall),
-            FutureBuilder<List<String>>(
-                future: account.seedPhrase,
-                initialData: <String>[],
-                builder: (context, snapshot) {
-                  if (!snapshot.hasData) return CircularProgressIndicator();
+          /// Seed phrase
+          Text(
+            'Word list',
+            style: boldTextStyle.copyWith(fontSize: fontSizeMedium),
+          ),
+          VerticalSpacing(of: marginSizeSmall),
+          FutureBuilder<List<String>>(
+              future: account.seedPhrase,
+              initialData: <String>[],
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) return CircularProgressIndicator();
 
-                  final seedPhrase = (snapshot.data ?? <String>[]).join(' ');
-                  return GestureDetector(
-                    onTap: () async {
-                      await FlutterClipboard.copy(seedPhrase);
+                final seedPhrase = (snapshot.data ?? <String>[]).join(' ');
+                return GestureDetector(
+                  onTap: () async {
+                    await FlutterClipboard.copy(seedPhrase);
 
-                      final snackBar = SnackBar(
-                        behavior: SnackBarBehavior.floating,
-                        content: Text('Word list copied to clipboard'),
-                      );
+                    final snackBar = SnackBar(
+                      behavior: SnackBarBehavior.floating,
+                      content: Text('Word list copied to clipboard'),
+                    );
 
-                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                    },
-                    child: RichText(
-                      text: TextSpan(
-                        children: [
-                          TextSpan(
-                            text: seedPhrase,
-                            style: regularTextStyle.copyWith(
-                                fontSize: fontSizeSmall),
-                          ),
-                          WidgetSpan(
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 8.0),
-                              child: Icon(
-                                Icons.copy,
-                                size: 20,
-                              ),
+                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  },
+                  child: RichText(
+                    text: TextSpan(
+                      children: [
+                        TextSpan(
+                          text: seedPhrase,
+                          style: regularTextStyle.copyWith(
+                              fontSize: fontSizeSmall),
+                        ),
+                        WidgetSpan(
+                          child: Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 8.0),
+                            child: Icon(
+                              Icons.copy,
+                              size: 20,
                             ),
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-                  );
-                }),
+                  ),
+                );
+              }),
 
-            Spacer(),
+          Spacer(),
 
-            ConstrainedBox(
-              constraints: BoxConstraints(maxHeight: 50),
-              child: ElevatedButton(
-                key: Key('FUND_ACCOUNT'),
-                child: Text('Fund Account'),
-                onPressed: () async {
-                  await launch(
-                    'https://bank.testnet.algorand.network/?account=${account.publicAddress}',
-                    forceWebView: true,
-                    enableJavaScript: true,
-                  );
-                },
-              ),
+          ConstrainedBox(
+            constraints: BoxConstraints(maxHeight: 50),
+            child: ElevatedButton(
+              key: Key('FUND_ACCOUNT'),
+              child: Text('Fund Account'),
+              onPressed: () async {
+                await launch(
+                  'https://bank.testnet.algorand.network/?account=${account.publicAddress}',
+                  forceWebView: true,
+                  enableJavaScript: true,
+                );
+              },
             ),
-          ],
-        ),
-      );
-    });
+          ),
+        ],
+      ),
+    );
   }
 }
 

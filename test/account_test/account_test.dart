@@ -1,5 +1,5 @@
 import 'package:algorand_dart/algorand_dart.dart';
-import 'package:flutter_algo_wallet/account_provider.dart';
+import 'package:flutter_algo_wallet/global_providers/account/account_provider.dart';
 import 'package:test/test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
