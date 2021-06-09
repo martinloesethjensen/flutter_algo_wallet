@@ -8,58 +8,53 @@
 import 'package:algorand_dart/algorand_dart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_algo_wallet/bottom_navbar/bottom_navbar_provider.dart';
-import 'package:flutter_algo_wallet/global_providers/account/account_provider.dart';
+import 'package:flutter_algo_wallet/screens/dashboard/dashboard_screen_provider.dart';
 import 'package:flutter_test/flutter_test.dart';
-
 import 'package:mockito/mockito.dart';
 
-import '../account_test/account_test.mocks.dart';
 import '../node_test/node_test.mocks.dart';
 import '../test_utils.dart';
+import 'account_test.mocks.dart';
 
 Future<void> main() async {
-  late Algorand algorand;
-  late BottomNavigationBarProvider navBarProvider;
-  // ignore: unused_local_variable
-  late AccountProvider accountProvider;
   // ignore: unused_local_variable
   late Account account;
+  late Algorand algorand;
+  late BottomNavigationBarProvider navBarProvider;
+  late DashboardScreenModeProvider dashboardScreenModeProvider;
 
   setUp(() {
     account = MockAccount();
     algorand = MockAlgorand();
     navBarProvider = BottomNavigationBarProvider();
+    dashboardScreenModeProvider = DashboardScreenModeProvider();
   });
 
-  testWidgets('Should change bottom navigation tab',
+  testWidgets(
+      'Should show public address, seed phrase, and fund account button, when wallet if loaded',
       (WidgetTester tester) async {
     when(algorand.health()).thenAnswer((_) => Future.value(true));
-    //when(accountProvider.account).thenReturn(account);
 
     // Build our app and trigger a frame.
     await tester.pumpWidget(
       appWithProviders(
-        injectedAlgorand: algorand,
-        injectedBottomNavBar: navBarProvider,
-        //injectedAccount: accountProvider,
-      ),
+          injectedAlgorand: algorand,
+          injectedBottomNavBar: navBarProvider,
+          injectedDashboardScreenMode: dashboardScreenModeProvider),
     );
+
+    // Check that we show spinner when we wait for data
+    expect(find.byType(CircularProgressIndicator), findsOneWidget);
 
     await tester.pumpAndSettle();
 
-    // Make sure currentIndex is 0
-    expect(navBarProvider.currentIndex, 0);
-
-    expect(find.byKey(Key('DASHBOARD')), findsOneWidget);
-
-    final finder = find.byTooltip('Profile');
-
-    await tester.tap(finder);
+    // Change to profile tab
+    navBarProvider.currentIndex = 2;
+    // Make sure currentIndex is 2
+    expect(navBarProvider.currentIndex, 2);
 
     await tester.pumpAndSettle();
 
     expect(find.byKey(Key('PROFILE')), findsOneWidget);
-
-    expect(navBarProvider.currentIndex, 2);
   });
 }
