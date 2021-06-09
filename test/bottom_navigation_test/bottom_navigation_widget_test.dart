@@ -7,32 +7,42 @@
 
 import 'package:algorand_dart/algorand_dart.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_algo_wallet/account_provider.dart';
 import 'package:flutter_algo_wallet/navigation/navigation_provider.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:mockito/mockito.dart';
 
+import '../account_test/account_test.mocks.dart';
 import '../node_test/node_test.mocks.dart';
 import '../test_utils.dart';
 
 Future<void> main() async {
   late Algorand algorand;
   late BottomNavigationBarProvider navBarProvider;
+  late AccountProvider accountProvider;
+  late Account account;
 
   setUp(() {
+    account = MockAccount();
     algorand = MockAlgorand();
     navBarProvider = BottomNavigationBarProvider();
+    accountProvider = MockAccountProvider();
   });
 
   testWidgets('Should change bottom navigation tab',
       (WidgetTester tester) async {
     when(algorand.health()).thenAnswer((_) => Future.value(true));
+    when(accountProvider.account).thenReturn(account);
 
     // Build our app and trigger a frame.
-    await tester.pumpWidget(appWithProviders(
-      injectedAlgorand: algorand,
-      injectedBottomNavBar: navBarProvider,
-    ));
+    await tester.pumpWidget(
+      appWithProviders(
+        injectedAlgorand: algorand,
+        injectedBottomNavBar: navBarProvider,
+        injectedAccount: accountProvider,
+      ),
+    );
 
     await tester.pumpAndSettle();
 

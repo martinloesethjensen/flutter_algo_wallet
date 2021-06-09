@@ -5,6 +5,7 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
 import '../node_test/node_test.mocks.dart';
+import '../test_utils.dart';
 import 'account_test.mocks.dart';
 
 @GenerateMocks([Account, AccountProvider])
@@ -13,39 +14,6 @@ void main() {
   late Algorand algorand;
   // ignore: unused_local_variable
   late AccountProvider accountProvider;
-
-  // Random Algorand public address
-  final publicAddress =
-      'D3ZUVRXN2KN44O6Z335HI6SOY7WLQW3RNP7HPGTAXBKZWPWKKOZDKJJT5Q';
-
-  // Random Algorand seed phrase
-  final seedPhrase = <String>[
-    'certain',
-    'social',
-    'kidney',
-    'magic',
-    'special',
-    'replace',
-    'genuine',
-    'meadow',
-    'pulse',
-    'tennis',
-    'unable',
-    'obey',
-    'urban',
-    'clerk',
-    'domain',
-    'sock',
-    'belt',
-    'slam',
-    'hybrid',
-    'tank',
-    'lumber',
-    'reason',
-    'canvas',
-    'about',
-    'wink'
-  ];
 
   setUp(() {
     account = MockAccount();

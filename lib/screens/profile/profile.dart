@@ -1,3 +1,4 @@
+import 'package:algorand_dart/algorand_dart.dart';
 import 'package:clipboard/clipboard.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_algo_wallet/account_provider.dart';
@@ -14,6 +15,15 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final accountProvider = context.watch<AccountProvider>();
+
+    if (accountProvider.account == null) {
+      return Container(
+        child: Center(
+          child: Text('No account created or wallet'),
+        ),
+      );
+    }
+
     final account = accountProvider.account;
     return Padding(
       padding: const EdgeInsets.all(20.0),
@@ -129,3 +139,36 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 }
+
+// Random Algorand public address
+final publicAddress =
+    'D3ZUVRXN2KN44O6Z335HI6SOY7WLQW3RNP7HPGTAXBKZWPWKKOZDKJJT5Q';
+
+// Random Algorand seed phrase
+final seedPhrase = <String>[
+  'certain',
+  'social',
+  'kidney',
+  'magic',
+  'special',
+  'replace',
+  'genuine',
+  'meadow',
+  'pulse',
+  'tennis',
+  'unable',
+  'obey',
+  'urban',
+  'clerk',
+  'domain',
+  'sock',
+  'belt',
+  'slam',
+  'hybrid',
+  'tank',
+  'lumber',
+  'reason',
+  'canvas',
+  'about',
+  'wink'
+];
