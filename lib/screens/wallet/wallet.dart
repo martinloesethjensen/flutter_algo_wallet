@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_algo_wallet/screens/components/wallet_widget.dart';
 
 class WalletScreen extends StatelessWidget {
   const WalletScreen({
@@ -7,11 +8,6 @@ class WalletScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[Expanded(child: Container(color: Colors.pink))],
-      ),
-    );
+    return WalletWidget();
   }
 }

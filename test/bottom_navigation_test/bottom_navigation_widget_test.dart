@@ -34,14 +34,12 @@ Future<void> main() async {
   testWidgets('Should change bottom navigation tab',
       (WidgetTester tester) async {
     when(algorand.health()).thenAnswer((_) => Future.value(true));
-    //when(accountProvider.account).thenReturn(account);
 
     // Build our app and trigger a frame.
     await tester.pumpWidget(
       appWithProviders(
         injectedAlgorand: algorand,
         injectedBottomNavBar: navBarProvider,
-        //injectedAccount: accountProvider,
       ),
     );
 

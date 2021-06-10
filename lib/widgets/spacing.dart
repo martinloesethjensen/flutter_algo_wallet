@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class VerticalSpacing extends StatelessWidget {
   final double of;
 
-  VerticalSpacing({this.of = 20});
+  const VerticalSpacing({this.of = 20});
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +16,7 @@ class VerticalSpacing extends StatelessWidget {
 class HorizontalSpacing extends StatelessWidget {
   final double of;
 
-  HorizontalSpacing({this.of = 20});
+  const HorizontalSpacing({this.of = 20});
 
   @override
   Widget build(BuildContext context) {

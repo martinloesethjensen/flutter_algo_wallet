@@ -39,7 +39,7 @@ class ProfileScreen extends StatelessWidget {
             'Account',
             style: boldTextStyle.copyWith(fontSize: fontSizeMedium),
           ),
-          VerticalSpacing(of: marginSizeSmall),
+          const VerticalSpacing(of: marginSizeSmall),
           GestureDetector(
             onTap: () async {
               await FlutterClipboard.copy(account.publicAddress);
@@ -72,14 +72,14 @@ class ProfileScreen extends StatelessWidget {
             ),
           ),
 
-          VerticalSpacing(of: marginSizeDefault),
+          const VerticalSpacing(of: marginSizeDefault),
 
           /// Seed phrase
           Text(
             'Word list',
             style: boldTextStyle.copyWith(fontSize: fontSizeMedium),
           ),
-          VerticalSpacing(of: marginSizeSmall),
+          const VerticalSpacing(of: marginSizeSmall),
           FutureBuilder<List<String>>(
               future: account.seedPhrase,
               initialData: <String>[],
