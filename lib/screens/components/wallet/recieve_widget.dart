@@ -36,7 +36,7 @@ class RecieveWidget extends StatelessWidget {
                       data:
                           'https://testnet.algoexplorer.io/address/${account.publicAddress}',
                       version: QrVersions.auto,
-                      size: 320,
+                      size: 250,
                       gapless: false,
                       embeddedImage: AssetImage('assets/images/algo_icon.png'),
                       embeddedImageStyle: QrEmbeddedImageStyle(
