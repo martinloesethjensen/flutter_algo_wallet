@@ -2,6 +2,7 @@ import 'package:algorand_dart/algorand_dart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_algo_wallet/global_providers/account/account_provider.dart';
 import 'package:flutter_algo_wallet/screens/components/algorand/algorand_balance.dart';
+import 'package:flutter_algo_wallet/screens/components/wallet/recieve_widget.dart';
 import 'package:flutter_algo_wallet/theme/theme.dart';
 import 'package:flutter_algo_wallet/widgets/spacing.dart';
 import 'package:provider/provider.dart';
@@ -58,10 +59,7 @@ class LoadedWalletWidget extends StatelessWidget {
               ),
               HorizontalSpacing(of: paddingSizeNormal),
               Expanded(
-                child: ElevatedButton(
-                  onPressed: () {},
-                  child: Text('Recieve'),
-                ),
+                child: RecieveWidget(account: account),
               ),
             ],
           ),

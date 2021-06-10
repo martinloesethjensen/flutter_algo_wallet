@@ -1,6 +1,7 @@
-import 'package:clipboard/clipboard.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_algo_wallet/global_providers/account/account_provider.dart';
+import 'package:flutter_algo_wallet/screens/components/text_clip.dart';
+import 'package:flutter_algo_wallet/screens/components/wallet/wallet_widget.dart';
 import 'package:flutter_algo_wallet/screens/dashboard/dashboard_screen_provider.dart';
 import 'package:flutter_algo_wallet/widgets/spacing.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -16,14 +17,10 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final dashboardProvider = context.watch<DashboardScreenModeProvider>();
 
+    // If a wallet has not been loaded then we should show the wallet.
     if (dashboardProvider.currentWalletStatus !=
         DashboardScreenMode.LOADED_WALLET) {
-      // TODO: WIDGET TEST THIS
-      return Container(
-        child: Center(
-          child: Text('No account created or wallet'),
-        ),
-      );
+      return WalletWidget();
     }
 
     final accountProvider = context.watch<AccountProvider>();
@@ -40,36 +37,9 @@ class ProfileScreen extends StatelessWidget {
             style: boldTextStyle.copyWith(fontSize: fontSizeMedium),
           ),
           const VerticalSpacing(of: marginSizeSmall),
-          GestureDetector(
-            onTap: () async {
-              await FlutterClipboard.copy(account.publicAddress);
-
-              final snackBar = SnackBar(
-                behavior: SnackBarBehavior.floating,
-                content: Text('Algorand address copied to clipboard'),
-              );
-
-              ScaffoldMessenger.of(context).showSnackBar(snackBar);
-            },
-            child: RichText(
-              text: TextSpan(
-                children: [
-                  TextSpan(
-                    text: account.publicAddress,
-                    style: regularTextStyle.copyWith(fontSize: fontSizeSmall),
-                  ),
-                  WidgetSpan(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      child: Icon(
-                        Icons.copy,
-                        size: 20,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
+          TextClip(
+            textToCopy: account.publicAddress,
+            snackBarText: 'Algorand address copied to clipboard',
           ),
 
           const VerticalSpacing(of: marginSizeDefault),
@@ -87,38 +57,9 @@ class ProfileScreen extends StatelessWidget {
                 if (!snapshot.hasData) return CircularProgressIndicator();
 
                 final seedPhrase = (snapshot.data ?? <String>[]).join(' ');
-                return GestureDetector(
-                  onTap: () async {
-                    await FlutterClipboard.copy(seedPhrase);
-
-                    final snackBar = SnackBar(
-                      behavior: SnackBarBehavior.floating,
-                      content: Text('Word list copied to clipboard'),
-                    );
-
-                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                  },
-                  child: RichText(
-                    text: TextSpan(
-                      children: [
-                        TextSpan(
-                          text: seedPhrase,
-                          style: regularTextStyle.copyWith(
-                              fontSize: fontSizeSmall),
-                        ),
-                        WidgetSpan(
-                          child: Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 8.0),
-                            child: Icon(
-                              Icons.copy,
-                              size: 20,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                return TextClip(
+                  textToCopy: seedPhrase,
+                  snackBarText: 'Word list copied to clipboard',
                 );
               }),
 

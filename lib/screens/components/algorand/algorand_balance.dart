@@ -14,7 +14,7 @@ class AlgorandBalance extends StatelessWidget {
         SizedBox(
           width: 16,
           height: 16,
-          child: Image.asset("assets/images/algo_icon.png"),
+          child: Image.asset('assets/images/algo_icon.png'),
         ),
         HorizontalSpacing(of: paddingSizeNormal),
         Text(
