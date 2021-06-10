@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_algo_wallet/screens/components/create_account_widget.dart';
-import 'package:flutter_algo_wallet/screens/components/import_account_widget.dart';
-import 'package:flutter_algo_wallet/screens/components/loaded_wallet_widget.dart';
-import 'package:flutter_algo_wallet/screens/components/wallet_widget.dart';
+import 'package:flutter_algo_wallet/screens/components/wallet/create_account_widget.dart';
+import 'package:flutter_algo_wallet/screens/components/wallet/import_account_widget.dart';
+import 'package:flutter_algo_wallet/screens/components/wallet/loaded_wallet_widget.dart';
+import 'package:flutter_algo_wallet/screens/components/wallet/wallet_widget.dart';
 import 'package:provider/provider.dart';
 
 import 'dashboard_screen_provider.dart';
@@ -15,9 +15,7 @@ class DashboardScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final dashboardScreen = context.watch<DashboardScreenModeProvider>();
-    return Center(
-      child: getDashboardScreen(dashboardScreen.currentWalletStatus),
-    );
+    return getDashboardScreen(dashboardScreen.currentWalletStatus);
   }
 
   Widget getDashboardScreen(DashboardScreenMode dashboardScreenMode) {
