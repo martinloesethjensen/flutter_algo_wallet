@@ -6,6 +6,8 @@ TODO: Description about the application
 
 TODO: Add info on how to get started.
 
+Have [Flutter installed](https://flutter.dev/docs/get-started/install)
+
 ### Installing and Running Algorand Node
 
 Links to get started with installing and running an Algorand node locally:
@@ -27,4 +29,4 @@ The device can also be a simulator, emulator, web app.
 
 Find out more by running:
 
-`flutter run`
+`flutter run --help`
