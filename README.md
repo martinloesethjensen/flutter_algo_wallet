@@ -1,6 +1,10 @@
 # flutter_algo_wallet
 
-TODO: Description about the application
+Blockchain has over the past decade evolved from being simply relegated to Bitcoin, to flourishing into a vast financial network with many different utilities and use cases.
+One such example is Algorand, which we combine with Google’s new experimental cross-development platform, Flutter.
+We aim to make an application targeted towards Android and iOS devices with features that would enable a user to create & import wallet(s), as well as use it to send and receive tokens.
+The broader point is to come to a conclusion in which we arrive with a newfound knowledge of TDD (test-driven development) and testing for specifically emerging technologies, with a smaller focus on fintech applications.
+
 
 ## Getting Started
 
